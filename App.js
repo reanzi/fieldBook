@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
@@ -30,8 +30,8 @@ const AppStack = createStackNavigator({
 })
 
 const AuthStack = createStackNavigator({
-  Login: LoginScreen,
-  Register: RegisterScreen
+  Register: RegisterScreen,
+  Login: LoginScreen
 })
 
 export default createAppContainer(

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, Platform, Picker, Modal } from 'react-native'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, Platform, Picker, Modal, Image, StatusBar, TouchableHighlightBase } from 'react-native'
+import { Ionicons } from "@expo/vector-icons"
 import * as firebase from "firebase"
 
 
@@ -103,6 +104,9 @@ class FormPicker extends Component {
 
 
 export default class RegisterScreen extends React.Component {
+    static navigationOptions = {
+        headerShown: false
+    };
     state = {
         name: "",
         designation: "",
@@ -129,7 +133,21 @@ export default class RegisterScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.greeting}>{`Hello!\nSign up to get started.`}</Text>
+                <StatusBar barStyle="light-content"></StatusBar>
+
+                <Image source={require("../assets/authHeader.png")} style={{ marginTop: -170, marginLeft: -30 }}></Image>
+                <Image source={require("../assets/authFooter.png")} style={{ position: "absolute", bottom: -250, right: -100 }}></Image>
+                <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
+                    <Ionicons name="ios-arrow-round-back" size={32} color="#FFF"></Ionicons>
+                    {/* <Text>{`< Back`}</Text> */}
+                </TouchableOpacity>
+
+                <View style={{ position: "absolute", top: 0, alignItems: "center", width: "100%" }}>
+                    <Text style={styles.greeting}>{`Hello!\nSign up to get started.`}</Text>
+                    <TouchableOpacity style={styles.avatar}>
+                        <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.errorMsg}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
@@ -197,8 +215,9 @@ const styles = StyleSheet.create({
     greeting: {
         marginTop: 32,
         fontSize: 18,
-        fontWeight: "400",
-        textAlign: "center"
+        fontWeight: '200',
+        textAlign: "center",
+        color: "#FFF"
     },
     error: {
         color: "#E9446A",
@@ -214,8 +233,28 @@ const styles = StyleSheet.create({
         // marginRight: 40,
         marginHorizontal: 40
     },
+    back: {
+        position: "absolute",
+        top: 48,
+        left: 32,
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: "rgba(21,22,48, 0.1)",
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    avatar: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        backgroundColor: "#E1E2E6",
+        marginTop: 28,
+        justifyContent: "center",
+        alignItems: "center"
+    },
     form: {
-        marginTop: 5,
+        marginTop: -70,
         marginBottom: 48,
         marginHorizontal: 30
     },
