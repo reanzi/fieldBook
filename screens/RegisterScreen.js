@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, Platform, Picker, Modal, Image, StatusBar, TouchableHighlightBase } from 'react-native'
 import { Ionicons } from "@expo/vector-icons"
-import * as firebase from "firebase"
+import * as ImagePicker from "expo-image-picker"
+import Fire from "../Fire"
+import UserPermissions from '../utilities/UserPermissions'
 
 
 const workDepartments = [
@@ -119,19 +121,22 @@ export default class RegisterScreen extends React.Component {
         errorMessage: null
     }
 
+    handlePickAvatar = async () => {
+        UserPermissions.getCameraPermission()
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4,3]
+        });
+
+        if (result.cancelled) {
+            this.setState({ user: { ...this.state.user, avatar: result.uri }})
+        }
+    }
+
     handlRegister = () => {
-        // const { name, designation, email, password } = this.state
-        // console.log(this.state)
-        firebase.auth()
-            .createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(userCredentials => {
-                return userCredentials.user.updateProfile({
-                    displayName: this.state.name
-                })
-            })
-            .catch(error => this.setState({ errorMessage: error.message }))
-
-
+        Fire.shared.createUser(this.state.user)
     }
     render() {
         return (
@@ -147,9 +152,10 @@ export default class RegisterScreen extends React.Component {
 
                 <View style={{ position: "absolute", top: 0, alignItems: "center", width: "100%" }}>
                     <Text style={styles.greeting}>{`Hello!\nSign up to get started.`}</Text>
-                    <TouchableOpacity style={styles.avatarPlaceholder}>
+                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
                         <Image source={{ uri: this.state.user.avatar}} style={styles.avatar} />
                         <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+                        <Text style={{color: "#FFF"}}>Add Photo</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -160,11 +166,20 @@ export default class RegisterScreen extends React.Component {
                 <View style={styles.form}>
                     <View>
                         <Text style={styles.inputTitle}>full name</Text>
-                        <TextInput style={styles.input} autoCapitalize="none" onChangeText={name => this.setState({ name })} value={this.state.name}></TextInput>
+                        <TextInput 
+                            style={styles.input} 
+                            autoCapitalize="none" 
+                            onChangeText={name => this.setState({user: { ...this.state.user, name}})} 
+                            value={this.state.user.name}
+                        ></TextInput>
                     </View>
                     <View style={styles.inputGap}>
                         <Text style={styles.inputTitle}>Work Designation</Text>
-                        <TextInput style={styles.input} autoCapitalize="none" onChangeText={designation => this.setState({ designation })} value={this.state.designation}></TextInput>
+                        <TextInput style={styles.input} 
+                            autoCapitalize="none" 
+                            onChangeText={designation => this.setState({ user: { ...this.state.user, designation} })} 
+                            value={this.state.user.designation}
+                        ></TextInput>
                     </View>
                     {/* <View style={styles.inputGap}>
                         <Text style={styles.inputTitle}>`Department:  Agriculture or Livestock`</Text>
@@ -187,16 +202,25 @@ export default class RegisterScreen extends React.Component {
                     </View> */}
                     <FormPicker
                         items={workDepartments}
-                        value={this.state.department}
-                        onValueChange={itemValue => this.setState({ department: itemValue })}
+                        onValueChange={department => this.setState({ user: { ...this.state.user, department} })}
+                        value={this.state.user.department}
                     />
                     <View style={styles.inputGap}>
                         <Text style={styles.inputTitle}>Email or Phone</Text>
-                        <TextInput style={styles.input} autoCapitalize="none" onChangeText={email => this.setState({ email })} value={this.state.email}></TextInput>
+                        <TextInput style={styles.input} 
+                            autoCapitalize="none" 
+                            onChangeText={email => this.setState({user: { ...this.state.user, email }})} 
+                            value={this.state.user.email}
+                        ></TextInput>
                     </View>
                     <View style={styles.inputGap}>
                         <Text style={styles.inputTitle}>Password</Text>
-                        <TextInput style={styles.input} secureTextEntry autoCapitalize="none" onChangeText={password => this.setState({ password })} value={this.state.password}></TextInput>
+                        <TextInput style={styles.input} 
+                            secureTextEntry 
+                            autoCapitalize="none" 
+                            onChangeText={password => this.setState({user: { ...this.state.user, password }})} 
+                            value={this.state.user.password}
+                        ></TextInput>
                     </View>
                 </View>
 
@@ -219,7 +243,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     greeting: {
-        marginTop: 32,
+        marginTop: 23,
         fontSize: 18,
         fontWeight: '200',
         textAlign: "center",
@@ -260,7 +284,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-        backgroundColor: "#F83D61",
+        backgroundColor: "#F29900",
         marginTop: 40,
         justifyContent: "center",
         alignItems: "center"
