@@ -42,7 +42,7 @@ class FormPicker extends Component {
                     selectedValue={this.props.value}
                     onValueChange={this.props.onValueChange}>
                     {this.props.items.map((i, index) => (
-                        <Picker.Item key={index} label={i.label} value={i.value} />
+                            <Picker.Item key={index} label={i.label} style={{ color: "red" }} value={i.value} />
                     ))}
                 </Picker>
             );
@@ -58,7 +58,7 @@ class FormPicker extends Component {
                         <TextInput
                             style={styles.input}
                             editable={false}
-                            placeholder="Select language"
+                            placeholder="Select Department"
                             onChangeText={searchString => {
                                 this.setState({ searchString });
                             }}
@@ -108,11 +108,14 @@ export default class RegisterScreen extends React.Component {
         headerShown: false
     };
     state = {
-        name: "",
-        designation: "",
-        department: "",
-        email: "",
-        password: "",
+        user: {
+            name: "",
+            designation: "",
+            department: "",
+            email: "",
+            password: "",
+            avatar: null
+        },
         errorMessage: null
     }
 
@@ -144,13 +147,16 @@ export default class RegisterScreen extends React.Component {
 
                 <View style={{ position: "absolute", top: 0, alignItems: "center", width: "100%" }}>
                     <Text style={styles.greeting}>{`Hello!\nSign up to get started.`}</Text>
-                    <TouchableOpacity style={styles.avatar}>
+                    <TouchableOpacity style={styles.avatarPlaceholder}>
+                        <Image source={{ uri: this.state.user.avatar}} style={styles.avatar} />
                         <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
                     </TouchableOpacity>
                 </View>
+
                 <View style={styles.errorMsg}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
+
                 <View style={styles.form}>
                     <View>
                         <Text style={styles.inputTitle}>full name</Text>
@@ -245,11 +251,17 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     avatar: {
+        position: "absolute",
+        width: 100,
+        height: 100,
+        borderRadius: 50
+    },
+    avatarPlaceholder: {
         width: 100,
         height: 100,
         borderRadius: 50,
-        backgroundColor: "#E1E2E6",
-        marginTop: 28,
+        backgroundColor: "#F83D61",
+        marginTop: 40,
         justifyContent: "center",
         alignItems: "center"
     },
