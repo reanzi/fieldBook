@@ -78,6 +78,9 @@ class Fire {
             alert("Error: ", error)
         }
     }
+    signOut = () => {
+        firebase.auth().signOut();
+    }
     get firestore() {
         return firebase.firestore()
     }

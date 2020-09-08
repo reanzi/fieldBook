@@ -130,7 +130,7 @@ export default class RegisterScreen extends React.Component {
             aspect: [4,3]
         });
 
-        if (result.cancelled) {
+        if (!result.cancelled) {
             this.setState({ user: { ...this.state.user, avatar: result.uri }})
         }
     }

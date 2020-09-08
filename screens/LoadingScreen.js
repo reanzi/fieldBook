@@ -4,9 +4,13 @@ import firebase from 'firebase'
 
 export default class LoadingScreeen extends React.Component {
     componentDidMount() {
+        this._isMounted = true;
         firebase.auth().onAuthStateChanged(user => {
             this.props.navigation.navigate(user ? "App" : "Auth")
         })
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
     }
     render() {
         return (

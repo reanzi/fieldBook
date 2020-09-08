@@ -37,6 +37,9 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+console.ignoredYellowBox = [
+  'Setting a timer'
+]
 const AppContainer = createStackNavigator(
   {
     default: createBottomTabNavigator(
@@ -73,10 +76,10 @@ const AppContainer = createStackNavigator(
       }
         },
       {
-        defaultOptions: {
+        defaultNavigationOptions: {
           tabBarOnPress: ({navigation, defaultHandler}) => {
             if( navigation.state.key == "Post") {
-              navigation.naviigate("postModal")
+              navigation.navigate("postModal")
             } else {
               defaultHandler()
             }
@@ -86,8 +89,7 @@ const AppContainer = createStackNavigator(
           activeTintColor: "#161F3D",
           inactiveTintColor: "#B8BBC4",
           showLabel: false
-        },
-        initialRouteName: "Profile"
+        }
       }
     ),
     postModal: {
@@ -105,9 +107,6 @@ const AppContainer = createStackNavigator(
 const AuthStack = createStackNavigator({
     Login: LoginScreen,
     Register: RegisterScreen
-  },
-  {
-    initialRouteName: "Register"
   }
 );
 
