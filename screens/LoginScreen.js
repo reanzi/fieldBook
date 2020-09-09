@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, StatusBar, LayoutAnimation } from 'react-native'
 import * as firebase from "firebase"
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class LoginScreeen extends React.Component {
     static navigationOptions = {
@@ -20,46 +21,49 @@ export default class LoginScreeen extends React.Component {
     render() {
         LayoutAnimation.easeInEaseOut();
         return (
-            <View style={styles.container}>
-                <StatusBar barStyle="light-content"></StatusBar>
-                <Image source={require("../assets/authHeader.png")} style={{ marginTop: -170, marginLeft: -50 }}></Image>
-                <Image source={require("../assets/authFooter.png")} style={{ position: "absolute", bottom: -150, right: 50 }}></Image>
-                <Image source={require("../assets/loginLogo.png")} style={{ marginTop: -150, alignSelf: "center" }}></Image>
-                <Text style={styles.greeting}>{`\nWelcome back.`}</Text>
-                <View style={styles.errorMsg}>
-                    {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
-                </View>
-                <View style={styles.form}>
-                    <View>
-                        <Text style={styles.inputTitle}>Email or Phone</Text>
-                        <TextInput style={styles.input} autoCapitalize="none" onChangeText={email => this.setState({ email })} value={this.state.email}></TextInput>
+            <ScrollView>
+                <View style={styles.container}>
+                    <StatusBar barStyle="light-content"></StatusBar>
+                    <Image source={require("../assets/authHeader.png")} style={{ marginTop: -170, marginLeft: -50 }}></Image>
+                    <Image source={require("../assets/authFooter.png")} style={{ position: "absolute", bottom: -150, right: 50 }}></Image>
+                    <Image source={require("../assets/loginLogo.png")} style={{ marginTop: -150, alignSelf: "center" }}></Image>
+                    <Text style={styles.greeting}>{`\nWelcome back.`}</Text>
+                    <View style={styles.errorMsg}>
+                        {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                     </View>
-                    <View style={{ marginTop: 32 }}>
-                        <Text style={styles.inputTitle}>Password</Text>
-                        <TextInput style={styles.input} secureTextEntry autoCapitalize="none" onChangeText={password => this.setState({ password })} value={this.state.password}></TextInput>
+                    <View style={styles.form}>
+                        <View>
+                            <Text style={styles.inputTitle}>Email or Phone</Text>
+                            <TextInput style={styles.input} autoCapitalize="none" autoFocus={true} onChangeText={email => this.setState({ email })} value={this.state.email}></TextInput>
+                        </View>
+                        <View style={{ marginTop: 32 }}>
+                            <Text style={styles.inputTitle}>Password</Text>
+                            <TextInput style={styles.input} secureTextEntry autoCapitalize="none" onChangeText={password => this.setState({ password })} value={this.state.password}></TextInput>
+                        </View>
                     </View>
-                </View>
 
-                <TouchableOpacity style={styles.button} onPress={this.handlLogin}>
-                    <Text style={{ color: "#FFF", textTransform: "uppercase", fontWeight: "500" }}> Sign In</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Text style={{ alignSelf: "center", marginTop: 10, color: "teal" }}> Forgot Something?</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate("Register")}>
-                    <Text style={{ color: "#414959", fontSize: 13 }}>
-                        New to FieldBook? <Text style={{ color: "#E9446A", fontWeight: "500" }}>Sign Up</Text>
-                    </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={this.handlLogin}>
+                        <Text style={{ color: "#FFF", textTransform: "uppercase", fontWeight: "500" }}> Sign In</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={{ alignSelf: "center", marginTop: 10, color: "teal" }}> Forgot Something?</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ alignSelf: "center", marginTop: 32 }} onPress={() => this.props.navigation.navigate("Register")}>
+                        <Text style={{ color: "#414959", fontSize: 13 }}>
+                            New to FieldBook? <Text style={{ color: "#E9446A", fontWeight: "500" }}>Sign Up</Text>
+                        </Text>
+                    </TouchableOpacity>
 
-            </View >
+                </View >
+            </ScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        paddingBottom: 0
     },
     greeting: {
         marginTop: -12,

@@ -16,9 +16,11 @@ import MessageScreen from './screens/MessageScreen'
 import NotificationScreen from './screens/NotificationScreen'
 import PostScreen from './screens/PostScreen'
 import ProfileScreen from './screens/ProfileScreen'
+// import OnboardingScreen from "./screens/OnboardingScreen"
 
 // Firebase
 import * as firebase from 'firebase'
+// import Onboarding from "react-native-onboarding-swiper"
 
 // config
 var firebaseConfig = {
@@ -40,7 +42,9 @@ if (!firebase.apps.length) {
 console.ignoredYellowBox = [
   'Setting a timer'
 ]
+let isLoading = true;
 const AppContainer = createStackNavigator(
+  // isLoading = false
   {
     default: createBottomTabNavigator(
         {
@@ -103,6 +107,10 @@ const AppContainer = createStackNavigator(
   }
 )
 
+// const OnboardStack = createStackNavigator( {
+//       Onboard: OnboardingScreen
+//     }
+// )
 
 const AuthStack = createStackNavigator({
     Login: LoginScreen,
@@ -114,11 +122,12 @@ export default createAppContainer(
   createSwitchNavigator(
     {
       Loading: LoadingScreen,
+      // Onboard: OnboardStack,
       App: AppContainer,
       Auth: AuthStack
     },
     {
-      initialRoutineName: "Loading"
+        initialRoutineName: "Loading"
     }
   )
 )
